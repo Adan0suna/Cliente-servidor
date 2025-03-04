@@ -1,27 +1,21 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const sequelize = require('./config/database');
-const destinoRoutes = require('./routes/destinoRoutes');
-const rutaRoutes = require('./routes/rutaRoutes');
-const eventoRoutes = require('./routes/eventoRoutes');
-const usuarioRoutes = require('./routes/usuarioRoutes');
+const destinoRoutes = require('./route/destinoRoutes');
 
 const app = express();
-
 app.use(cors());
 app.use(express.json());
 
-app.use('/usuarios', usuarioRoutes);
+//http://localhost:3000/destinos
 app.use('/destinos', destinoRoutes);
-app.use('/rutas', rutaRoutes);
-app.use('/eventos', eventoRoutes);
+//http://localhost:3000/rutas
+app.use('/rutas', require('./route/rutaRoutes'));
+//http://localhost:3000/eventos
+app.use('/eventos', require('./route/eventoRoutes'));
 
 const PORT = process.env.PORT || 3000;
-
-sequelize.sync({ force: true }) // Solo en desarrollo
-  .then(() => {
-    app.listen(PORT, () => {
-      console.log(`Servidor corriendo en puerto ${PORT}`);
-    });
-  })
-  .catch(err => console.log('Error al conectar a la DB:', err));
+app.listen(PORT, () => {
+  console.log(`Servidor corriendo en puerto ${PORT}`);
+  console.log(`Conectando a PocketBase en: ${process.env.POCKETBASE_URL}`);
+});
