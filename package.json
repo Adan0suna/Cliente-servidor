@@ -1,23 +1,27 @@
 {
-  "name": "cliente-servidor",
+  "name": "transacciones-bancarias",
   "version": "1.0.0",
-  "description": "proposito educativo UNIPOLI",
-  "main": "server.js",
+  "description": "Sistema de transacciones bancarias con bloqueo de dos fases",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node server.js",
-    "testruta": "node rutatest.js"
-
+    "test": "node test/transactionTest.js",
+    "start": "node app.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "type": "commonjs",
   "dependencies": {
-    "bcrypt": "^5.1.1",
-    "body-parser": "^1.20.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
-    "mysql": "^2.18.1"
+    "mongoose": "^6.13.8"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "mocha": "^11.1.0",
+    "nodemon": "^3.1.9",
+    "sequelize-cli": "^6.6.2",
+    "supertest": "^7.0.0"
   }
 }

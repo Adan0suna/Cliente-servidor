@@ -1,21 +1,23 @@
-require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const destinoRoutes = require('./route/destinoRoutes');
+const PORT = process.env.PORT || 3003;
+const app = require('./app');
+const db = require('./config/db');
+const swaggerDocs = require('./config/swagger');
 
-const app = express();
-app.use(cors());
-app.use(express.json());
+// Swagger Docs
+swaggerDocs(app, PORT);
 
-//http://localhost:3000/destinos
-app.use('/destinos', destinoRoutes);
-//http://localhost:3000/rutas
-app.use('/rutas', require('./route/rutaRoutes'));
-//http://localhost:3000/eventos
-app.use('/eventos', require('./route/eventoRoutes'));
+// Connect to DB
+db.sync()
+    .then(() => {
+        console.log('Connected to the database');
+    })
+    .catch((err) => {
+        console.error('Error connecting to the database: ', err);
+    });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Servidor corriendo en puerto ${PORT}`);
-  console.log(`Conectando a PocketBase en: ${process.env.POCKETBASE_URL}`);
-});
+// Start the server only if this file is run directly
+if (require.main === module) {
+    app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}`);
+    });
+}
